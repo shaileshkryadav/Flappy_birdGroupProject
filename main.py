@@ -32,7 +32,7 @@ background_img = pygame.image.load("background.png").convert()
 background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
 
 bird_img = pygame.image.load("bird.png").convert_alpha()
-bird_img = pygame.transform.scale(bird_img, (34, 24))
+bird_img = pygame.transform.scale(bird_img, (45, 40))
 
 pipe_img = pygame.image.load("Pipes.png").convert_alpha()
 pipe_img = pygame.transform.scale(pipe_img, (70, 500))
