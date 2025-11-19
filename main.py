@@ -68,6 +68,12 @@ class Bird:
         rect = rotated.get_rect(center=(self.x, self.y))
         surf.blit(rotated, rect.topleft)
 
+    def get_hitbox(self):
+        shrink = 6   # reduce rectangle by 6px on each side
+        hitbox = self.rect.inflate(-shrink, -shrink)
+        return hitbox
+
+
 class Pipe:
     def __init__(self, x):
         self.x = x
@@ -83,9 +89,18 @@ class Pipe:
 
     def collides_with(self, bird_rect):
         top_rect = pygame.Rect(self.x, 0, self.width, self.gap_y - PIPE_GAP // 2)
-        bottom_rect = pygame.Rect(self.x, self.gap_y + PIPE_GAP // 2, self.width,
-                                  HEIGHT - GROUND_HEIGHT - (self.gap_y + PIPE_GAP // 2))
+        bottom_rect = pygame.Rect(
+            self.x,
+            self.gap_y + PIPE_GAP // 2,
+            self.width,
+            HEIGHT - GROUND_HEIGHT - (self.gap_y + PIPE_GAP // 2)
+        )
+
+        top_rect.inflate_ip(-4, -4)
+        bottom_rect.inflate_ip(-4, -4)
+
         return bird_rect.colliderect(top_rect) or bird_rect.colliderect(bottom_rect)
+
 
     def draw(self, surf):
         # top pipe (flipped)
@@ -155,7 +170,7 @@ def main():
                 if not pipe.passed and pipe.x + pipe.width < bird.x:
                     pipe.passed = True
                     score += 1
-                if pipe.collides_with(bird.rect):
+                if pipe.collides_with(bird.get_hitbox()):
                     game_over = True
             pipes = [p for p in pipes if not p.offscreen()]
 
